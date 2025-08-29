@@ -1,0 +1,35 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js 15.x
+      uses: actions/setup-node@v3
+        with:
+          node-version: '15.x'
+    - run: npm install -g npm@7
+    - run: npm install
+
+#    - name: install Dependecies
+#      run: npm install
+
+    - name: Run Linter(ESLint)
+      run: npm run lint
+
+    - name: Run Formatter(Prettier)
+      run: npm run prettier --write
+
+    - name: Run tests(Jest)
+      run: CI=true npm run test
+
+    - name: Build Application
+      run: npm run build
